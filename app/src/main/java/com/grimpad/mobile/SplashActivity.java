@@ -1,217 +1,211 @@
 package com.grimpad.mobile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.WindowManager;
-import android.content.Intent;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN |
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        );
         getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
-        SplashView splash = new SplashView(this);
-        setContentView(splash);
-
-        // After animation → go to main
+            View.SYSTEM_UI_FLAG_FULLSCREEN |
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
+        SplashView view = new SplashView(this);
+        setContentView(view);
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
-        }, 4500);
+        }, 4800);
     }
 
     static class SplashView extends View {
-        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private float progress = 0f;
+        private final Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Handler h = new Handler(Looper.getMainLooper());
-        private long startTime = -1;
-        private final int DURATION = 4000;
-
-        // Phases:
-        // 0-800ms   → black screen
-        // 800-1600ms → "A GRIM ENTERTAINMENT" fade in (like "A ROCKSTAR GAMES PRODUCTION")
-        // 1600-2200ms → hold
-        // 2200-3000ms → fade out, GRIMPAD fades in big
-        // 3000-4000ms → GRIMPAD holds, tagline appears
-        // 4000-4500ms → fade to black
+        private long t0 = -1;
 
         SplashView(android.content.Context ctx) {
             super(ctx);
             setBackgroundColor(Color.BLACK);
         }
 
-        @Override
-        protected void onAttachedToWindow() {
+        @Override protected void onAttachedToWindow() {
             super.onAttachedToWindow();
-            startTime = System.currentTimeMillis();
-            tick();
+            t0 = System.currentTimeMillis();
+            h.post(new Runnable() {
+                @Override public void run() { invalidate(); h.postDelayed(this, 16); }
+            });
         }
 
-        private void tick() {
-            invalidate();
-            h.postDelayed(this::tick, 16);
+        @Override protected void onDetachedFromWindow() {
+            super.onDetachedFromWindow();
+            h.removeCallbacksAndMessages(null);
         }
 
         @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-            if (startTime < 0) return;
-
-            long elapsed = System.currentTimeMillis() - startTime;
+        protected void onDraw(Canvas c) {
+            if (t0 < 0) return;
+            long ms = System.currentTimeMillis() - t0;
             float W = getWidth(), H = getHeight();
+            c.drawColor(Color.BLACK);
 
-            canvas.drawColor(Color.BLACK);
+            // ── PHASE 1: "A GRIM ENTERTAINMENT PRODUCTION" (600–2400ms) ──
+            if (ms > 600 && ms < 2600) {
+                float a;
+                if (ms < 1100)      a = (ms - 600f) / 500f;
+                else if (ms < 2000) a = 1f;
+                else                a = 1f - (ms - 2000f) / 600f;
+                a = Math.max(0f, Math.min(1f, a));
 
-            // ── Phase 1: "A GRIM ENTERTAINMENT PRODUCTION" ──────────────
-            if (elapsed >= 600 && elapsed <= 2400) {
-                float alpha;
-                if (elapsed < 1000) {
-                    alpha = (elapsed - 600) / 400f; // fade in
-                } else if (elapsed < 1800) {
-                    alpha = 1f; // hold
-                } else {
-                    alpha = 1f - (elapsed - 1800) / 600f; // fade out
-                }
-                alpha = Math.max(0f, Math.min(1f, alpha));
+                // Thin horizontal lines (Rockstar style)
+                p.setStyle(Paint.Style.STROKE);
+                p.setStrokeWidth(0.8f);
+                p.setColor(Color.argb((int)(a*90), 255,255,255));
+                c.drawLine(W*0.22f, H*0.42f, W*0.78f, H*0.42f, p);
+                c.drawLine(W*0.22f, H*0.60f, W*0.78f, H*0.60f, p);
+                p.setStyle(Paint.Style.FILL);
 
-                // Top line — small
-                paint.setColor(Color.argb((int)(alpha * 180), 200, 200, 200));
-                paint.setTextSize(H * 0.022f);
-                paint.setTypeface(Typeface.create("serif", Typeface.NORMAL));
-                paint.setTextAlign(Paint.Align.CENTER);
-                paint.setLetterSpacing(0.25f);
-                canvas.drawText("A  G R I M  E N T E R T A I N M E N T", W / 2f, H * 0.46f, paint);
+                // Top small text
+                p.setColor(Color.argb((int)(a*160), 200,200,200));
+                p.setTextSize(H * 0.021f);
+                p.setTypeface(Typeface.create("serif", Typeface.NORMAL));
+                p.setTextAlign(Paint.Align.CENTER);
+                p.setLetterSpacing(0.28f);
+                c.drawText("A  G R I M  E N T E R T A I N M E N T", W/2f, H*0.47f, p);
 
-                // Main line
-                paint.setColor(Color.argb((int)(alpha * 255), 255, 255, 255));
-                paint.setTextSize(H * 0.038f);
-                paint.setTypeface(Typeface.create("serif", Typeface.BOLD));
-                paint.setLetterSpacing(0.15f);
-                canvas.drawText("P R O D U C T I O N", W / 2f, H * 0.54f, paint);
-
-                // Thin line above and below (Rockstar style separator)
-                paint.setColor(Color.argb((int)(alpha * 120), 255, 255, 255));
-                paint.setStrokeWidth(0.8f);
-                paint.setStyle(Paint.Style.STROKE);
-                canvas.drawLine(W * 0.28f, H * 0.42f, W * 0.72f, H * 0.42f, paint);
-                canvas.drawLine(W * 0.28f, H * 0.58f, W * 0.72f, H * 0.58f, paint);
-                paint.setStyle(Paint.Style.FILL);
+                // Main text
+                p.setColor(Color.argb((int)(a*255), 255,255,255));
+                p.setTextSize(H * 0.036f);
+                p.setTypeface(Typeface.create("serif", Typeface.BOLD));
+                p.setLetterSpacing(0.18f);
+                c.drawText("P R O D U C T I O N", W/2f, H*0.55f, p);
             }
 
-            // ── Phase 2: GRIMPAD logo ─────────────────────────────────────
-            if (elapsed >= 2200) {
-                float alpha;
-                if (elapsed < 2700) {
-                    alpha = (elapsed - 2200) / 500f; // fade in
-                } else if (elapsed < 3800) {
-                    alpha = 1f; // hold
-                } else {
-                    alpha = 1f - (elapsed - 3800) / 500f; // fade out
-                }
-                alpha = Math.max(0f, Math.min(1f, alpha));
+            // ── PHASE 2: GRIMPAD LOGO (2400–4800ms) ──────────────────────
+            if (ms > 2200) {
+                float a;
+                if (ms < 2800)      a = (ms - 2200f) / 600f;
+                else if (ms < 4200) a = 1f;
+                else                a = 1f - (ms - 4200f) / 600f;
+                a = Math.max(0f, Math.min(1f, a));
 
-                // Draw GrimPad shield/logo shape
-                drawGrimPadLogo(canvas, W / 2f, H * 0.38f, H * 0.18f, alpha);
+                // Controller icon
+                drawController(c, W/2f, H*0.35f, H*0.20f, a);
 
-                // GRIMPAD text — bold, wide spaced
-                paint.setColor(Color.argb((int)(alpha * 255), 255, 255, 255));
-                paint.setTextSize(H * 0.09f);
-                paint.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
-                paint.setLetterSpacing(0.18f);
-                paint.setTextAlign(Paint.Align.CENTER);
-                canvas.drawText("GRIMPAD", W / 2f, H * 0.62f, paint);
+                // GRIMPAD
+                p.setStyle(Paint.Style.FILL);
+                p.setColor(Color.argb((int)(a*255), 255,255,255));
+                p.setTextSize(H * 0.092f);
+                p.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
+                p.setLetterSpacing(0.20f);
+                p.setTextAlign(Paint.Align.CENTER);
+                c.drawText("GRIMPAD", W/2f, H*0.64f, p);
+
+                // Green underline
+                p.setColor(Color.argb((int)(a*200), 16,185,129));
+                p.setStyle(Paint.Style.STROKE);
+                p.setStrokeWidth(H*0.003f);
+                c.drawLine(W*0.28f, H*0.67f, W*0.72f, H*0.67f, p);
+                p.setStyle(Paint.Style.FILL);
 
                 // Tagline
-                if (elapsed > 2800) {
-                    float tAlpha = Math.min(1f, (elapsed - 2800) / 400f) * alpha;
-                    paint.setColor(Color.argb((int)(tAlpha * 180), 16, 185, 129));
-                    paint.setTextSize(H * 0.022f);
-                    paint.setTypeface(Typeface.create("monospace", Typeface.NORMAL));
-                    paint.setLetterSpacing(0.20f);
-                    canvas.drawText("V I R T U A L  X B O X  C O N T R O L L E R", W / 2f, H * 0.72f, paint);
+                if (ms > 3000) {
+                    float ta = Math.min(1f, (ms-3000f)/500f) * a;
+                    p.setColor(Color.argb((int)(ta*200), 16,185,129));
+                    p.setTextSize(H * 0.020f);
+                    p.setTypeface(Typeface.create("monospace", Typeface.NORMAL));
+                    p.setLetterSpacing(0.22f);
+                    c.drawText("V I R T U A L   X B O X   C O N T R O L L E R", W/2f, H*0.73f, p);
                 }
 
                 // Version
-                if (elapsed > 3000) {
-                    float vAlpha = Math.min(1f, (elapsed - 3000) / 400f) * alpha;
-                    paint.setColor(Color.argb((int)(vAlpha * 100), 255, 255, 255));
-                    paint.setTextSize(H * 0.014f);
-                    paint.setLetterSpacing(0.1f);
-                    canvas.drawText("v 1.0", W / 2f, H * 0.78f, paint);
+                if (ms > 3400) {
+                    float va = Math.min(1f, (ms-3400f)/400f) * a;
+                    p.setColor(Color.argb((int)(va*80), 255,255,255));
+                    p.setTextSize(H * 0.013f);
+                    p.setLetterSpacing(0.1f);
+                    c.drawText("v 1.0.0", W/2f, H*0.79f, p);
                 }
             }
 
-            // ── Scanline overlay (cinematic feel) ─────────────────────────
-            paint.setColor(Color.argb(12, 0, 0, 0));
-            paint.setStyle(Paint.Style.FILL);
-            for (float y = 0; y < H; y += 4) {
-                canvas.drawRect(0, y, W, y + 2, paint);
-            }
-            paint.setStyle(Paint.Style.FILL);
+            // Scanlines
+            p.setColor(Color.argb(10, 0,0,0));
+            for (float y = 0; y < H; y += 4) c.drawRect(0, y, W, y+2, p);
         }
 
-        private void drawGrimPadLogo(Canvas canvas, float cx, float cy, float size, float alpha) {
-            // Controller silhouette — clean minimal lines
-            paint.setColor(Color.argb((int)(alpha * 255), 16, 185, 129));
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(size * 0.04f);
+        private void drawController(Canvas c, float cx, float cy, float size, float alpha) {
+            int g = Color.argb((int)(alpha*255), 16,185,129);
+            int dk = Color.argb((int)(alpha*255), 8,14,10);
+            float bw = size*1.7f, bh = size*0.85f;
+            float left = cx-bw/2f, top = cy-bh/2f;
+            float r = size*0.18f;
+            float sw = size*0.045f;
 
-            // Controller body outline
-            float bw = size * 1.6f, bh = size * 0.9f;
-            float left = cx - bw / 2f, top = cy - bh / 2f;
+            // Body fill
+            p.setStyle(Paint.Style.FILL);
+            p.setColor(dk);
+            c.drawRoundRect(new RectF(left,top,left+bw,top+bh), r, r, p);
 
-            // Main body rounded rect
-            android.graphics.RectF body = new android.graphics.RectF(left, top, left + bw, top + bh);
-            paint.setColor(Color.argb((int)(alpha * 255), 16, 185, 129));
-            canvas.drawRoundRect(body, size * 0.2f, size * 0.2f, paint);
+            // Body stroke
+            p.setStyle(Paint.Style.STROKE);
+            p.setStrokeWidth(sw);
+            p.setColor(g);
+            c.drawRoundRect(new RectF(left,top,left+bw,top+bh), r, r, p);
 
             // Left grip
-            android.graphics.RectF lGrip = new android.graphics.RectF(left + size * 0.1f, top + bh * 0.6f, left + size * 0.6f, top + bh * 1.4f);
-            canvas.drawRoundRect(lGrip, size * 0.15f, size * 0.15f, paint);
+            RectF lg = new RectF(left+size*0.08f, top+bh*0.6f, left+size*0.58f, top+bh+size*0.55f);
+            p.setStyle(Paint.Style.FILL); p.setColor(dk); c.drawRoundRect(lg, r*0.7f, r*0.7f, p);
+            p.setStyle(Paint.Style.STROKE); p.setColor(g); c.drawRoundRect(lg, r*0.7f, r*0.7f, p);
 
             // Right grip
-            android.graphics.RectF rGrip = new android.graphics.RectF(left + bw - size * 0.6f, top + bh * 0.6f, left + bw - size * 0.1f, top + bh * 1.4f);
-            canvas.drawRoundRect(rGrip, size * 0.15f, size * 0.15f, paint);
+            RectF rg = new RectF(left+bw-size*0.58f, top+bh*0.6f, left+bw-size*0.08f, top+bh+size*0.55f);
+            p.setStyle(Paint.Style.FILL); p.setColor(dk); c.drawRoundRect(rg, r*0.7f, r*0.7f, p);
+            p.setStyle(Paint.Style.STROKE); p.setColor(g); c.drawRoundRect(rg, r*0.7f, r*0.7f, p);
 
-            // Left stick circle
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(size * 0.03f);
-            canvas.drawCircle(cx - size * 0.45f, cy + size * 0.05f, size * 0.18f, paint);
+            float sr = size*0.13f;
+            // Left stick
+            p.setStyle(Paint.Style.FILL);
+            p.setColor(Color.argb((int)(alpha*60), 16,185,129));
+            c.drawCircle(cx-size*0.42f, cy+size*0.05f, sr, p);
+            p.setStyle(Paint.Style.STROKE); p.setStrokeWidth(sw*0.7f); p.setColor(g);
+            c.drawCircle(cx-size*0.42f, cy+size*0.05f, sr, p);
 
-            // Right stick circle
-            canvas.drawCircle(cx + size * 0.15f, cy + size * 0.2f, size * 0.18f, paint);
+            // Right stick
+            p.setStyle(Paint.Style.FILL); p.setColor(Color.argb((int)(alpha*60), 16,185,129));
+            c.drawCircle(cx+size*0.12f, cy+size*0.20f, sr, p);
+            p.setStyle(Paint.Style.STROKE); p.setColor(g);
+            c.drawCircle(cx+size*0.12f, cy+size*0.20f, sr, p);
 
-            // ABXY dots
-            paint.setStyle(Paint.Style.FILL);
-            float bx = cx + size * 0.55f, by = cy - size * 0.1f, br = size * 0.065f;
-            paint.setColor(Color.argb((int)(alpha * 220), 16, 185, 129));
-            canvas.drawCircle(bx, by - br * 2.2f, br, paint); // Y
-            canvas.drawCircle(bx + br * 2.2f, by, br, paint); // B
-            canvas.drawCircle(bx - br * 2.2f, by, br, paint); // X
-            canvas.drawCircle(bx, by + br * 2.2f, br, paint); // A
+            // ABXY
+            float bx=cx+size*0.52f, by=cy-size*0.05f, br=size*0.07f, gap=br*2.4f;
+            p.setStyle(Paint.Style.FILL);
+            p.setColor(Color.argb((int)(alpha*255),16,185,129));  c.drawCircle(bx, by-gap, br, p); // Y
+            p.setColor(Color.argb((int)(alpha*255),239,68,68));   c.drawCircle(bx+gap, by, br, p); // B
+            p.setColor(Color.argb((int)(alpha*255),59,130,246));  c.drawCircle(bx-gap, by, br, p); // X
+            p.setColor(Color.argb((int)(alpha*255),16,185,129));  c.drawCircle(bx, by+gap, br, p); // A
 
-            // D-pad cross
-            paint.setColor(Color.argb((int)(alpha * 180), 16, 185, 129));
-            float dx = cx - size * 0.55f, dy = cy - size * 0.15f, dw = size * 0.1f, dl = size * 0.3f;
-            canvas.drawRect(dx - dl, dy - dw, dx + dl, dy + dw, paint); // horizontal
-            canvas.drawRect(dx - dw, dy - dl, dx + dw, dy + dl, paint); // vertical
-
-            paint.setStyle(Paint.Style.FILL);
+            // Dpad
+            float dpx=cx-size*0.52f, dpy=cy-size*0.12f, dw=size*0.07f, dl=size*0.21f;
+            p.setColor(Color.argb((int)(alpha*200),16,185,129));
+            c.drawRect(dpx-dl, dpy-dw, dpx+dl, dpy+dw, p);
+            c.drawRect(dpx-dw, dpy-dl, dpx+dw, dpy+dl, p);
         }
     }
 }

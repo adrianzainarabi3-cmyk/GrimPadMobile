@@ -1,61 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:gravity="center"
-    android:background="#0a0a1a" android:padding="32dp">
-    <TextView android:text="🎮"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:textSize="56sp" android:layout_gravity="center" android:layout_marginBottom="4dp"/>
-    <TextView android:text="GRIMPAD"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:textSize="32sp" android:textStyle="bold" android:textColor="#10b981"
-        android:letterSpacing="0.18" android:layout_gravity="center" android:fontFamily="monospace"/>
-    <TextView android:text="VIRTUAL XBOX CONTROLLER"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:textSize="11sp" android:textColor="#555555" android:letterSpacing="0.2"
-        android:layout_gravity="center" android:layout_marginBottom="32dp" android:fontFamily="monospace"/>
-    <LinearLayout android:layout_width="300dp" android:layout_height="wrap_content"
-        android:orientation="vertical" android:background="@drawable/card_bg"
-        android:padding="20dp" android:layout_gravity="center">
-        <TextView android:text="RELAY SERVER IP:PORT"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="10sp" android:textColor="#555555"
-            android:layout_marginBottom="6dp" android:fontFamily="monospace"/>
-        <EditText android:id="@+id/serverInput"
-            android:layout_width="match_parent" android:layout_height="46dp"
-            android:hint="192.168.1.x:8765" android:text="localhost:8765"
-            android:textSize="14sp" android:textColor="#ffffff"
-            android:background="@drawable/input_bg" android:padding="10dp"
-            android:inputType="textUri" android:fontFamily="monospace"
-            android:singleLine="true" android:layout_marginBottom="16dp"/>
-        <TextView android:text="CONTROLLER TYPE"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:textSize="10sp" android:textColor="#555555"
-            android:layout_marginBottom="6dp" android:fontFamily="monospace"/>
-        <RadioGroup android:id="@+id/ctrlTypeGroup"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:layout_marginBottom="20dp">
-            <RadioButton android:id="@+id/radioSeries"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="Series X/S"
-                android:textColor="#00c8ff" android:buttonTint="#00c8ff"
-                android:checked="true" android:textSize="12sp" android:fontFamily="monospace"/>
-            <RadioButton android:id="@+id/radio360"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="Xbox 360"
-                android:textColor="#10b981" android:buttonTint="#10b981"
-                android:textSize="12sp" android:fontFamily="monospace"/>
-        </RadioGroup>
-        <Button android:id="@+id/btnHost"
-            android:layout_width="match_parent" android:layout_height="48dp"
-            android:text="HOST — PLAYER 1" android:textSize="13sp"
-            android:textStyle="bold" android:textColor="#000000"
-            android:backgroundTint="#10b981" android:layout_marginBottom="10dp"
-            android:fontFamily="monospace"/>
-        <Button android:id="@+id/btnJoin"
-            android:layout_width="match_parent" android:layout_height="48dp"
-            android:text="JOIN GAME" android:textSize="13sp"
-            android:textStyle="bold" android:textColor="#00c8ff"
-            android:backgroundTint="#0d0d2e" android:fontFamily="monospace"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#080814">
+
+    <!-- Background grid lines -->
+    <View android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="#050510"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="32dp">
+
+        <!-- Left panel: Branding -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:text="GRIMPAD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:textColor="#10b981"
+                android:fontFamily="sans-serif-condensed"
+                android:letterSpacing="0.15"/>
+
+            <View
+                android:layout_width="180dp"
+                android:layout_height="2dp"
+                android:background="#10b981"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:text="VIRTUAL XBOX CONTROLLER"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="#3a5a4a"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.25"/>
+
+            <TextView
+                android:text="UP TO 15 PLAYERS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#1a3a2a"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.15"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="160dp"
+            android:background="#1a2a20"
+            android:layout_marginHorizontal="32dp"/>
+
+        <!-- Right panel: Controls -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <!-- Server input -->
+            <TextView
+                android:text="RELAY SERVER"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#3a5a4a"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.2"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/serverInput"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="192.168.1.x:8765"
+                android:text="localhost:8765"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:background="@drawable/input_bg"
+                android:padding="12dp"
+                android:inputType="textUri"
+                android:fontFamily="monospace"
+                android:singleLine="true"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Controller type -->
+            <TextView
+                android:text="CONTROLLER TYPE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#3a5a4a"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.2"
+                android:layout_marginBottom="6dp"/>
+
+            <RadioGroup
+                android:id="@+id/ctrlTypeGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="24dp">
+                <RadioButton
+                    android:id="@+id/radioSeries"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SERIES X/S"
+                    android:textColor="#00c8ff"
+                    android:buttonTint="#00c8ff"
+                    android:checked="true"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"/>
+                <RadioButton
+                    android:id="@+id/radio360"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="XBOX 360"
+                    android:textColor="#10b981"
+                    android:buttonTint="#10b981"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"/>
+            </RadioGroup>
+
+            <!-- Buttons -->
+            <Button
+                android:id="@+id/btnHost"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="HOST  —  PLAYER 1"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:backgroundTint="#10b981"
+                android:letterSpacing="0.08"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="monospace"/>
+
+            <Button
+                android:id="@+id/btnJoin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="JOIN  GAME"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#00c8ff"
+                android:backgroundTint="#0a0f1a"
+                android:letterSpacing="0.08"
+                android:fontFamily="monospace"/>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <!-- Version bottom right -->
+    <TextView
+        android:text="v1.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:textSize="10sp"
+        android:textColor="#1a2a20"
+        android:fontFamily="monospace"
+        android:padding="16dp"/>
+
+</FrameLayout>
