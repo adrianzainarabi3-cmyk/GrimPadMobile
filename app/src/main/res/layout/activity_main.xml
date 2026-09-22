@@ -2,164 +2,110 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#060612">
+    android:background="#060612"
+    android:clipChildren="true"
+    android:clipToPadding="true">
 
-    <!-- Subtle grid background -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:orientation="horizontal">
-        <View android:layout_width="1dp" android:layout_height="match_parent"
-            android:background="#0a0a1e" android:layout_marginStart="80dp"/>
-        <View android:layout_width="1dp" android:layout_height="match_parent"
-            android:background="#0a0a1e" android:layout_marginStart="80dp"/>
-        <View android:layout_width="1dp" android:layout_height="match_parent"
-            android:background="#0a0a1e" android:layout_marginStart="80dp"/>
-        <View android:layout_width="1dp" android:layout_height="match_parent"
-            android:background="#0a0a1e" android:layout_marginStart="80dp"/>
-    </LinearLayout>
-
-    <!-- Main content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="center">
 
-        <!-- LEFT PANEL: Branding -->
+        <!-- LEFT: Branding -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingStart="32dp"
-            android:paddingEnd="16dp">
+            android:paddingStart="36dp"
+            android:paddingEnd="12dp">
 
-            <!-- Top accent line -->
-            <View android:layout_width="48dp" android:layout_height="3dp"
-                android:background="#10b981" android:layout_marginBottom="16dp"
+            <View android:layout_width="40dp" android:layout_height="3dp"
+                android:background="#10b981"
+                android:layout_marginBottom="14dp"
                 android:layout_gravity="start"/>
 
-            <TextView
-                android:text="GRIM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="52sp"
-                android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:fontFamily="sans-serif-condensed"
-                android:letterSpacing="0.08"
-                android:lineSpacingMultiplier="0.85"/>
+            <TextView android:text="GRIM"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="54sp" android:textStyle="bold" android:textColor="#ffffff"
+                android:fontFamily="sans-serif-condensed" android:letterSpacing="0.06"
+                android:lineSpacingMultiplier="0.9"/>
 
-            <TextView
-                android:text="PAD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="52sp"
-                android:textStyle="bold"
-                android:textColor="#10b981"
-                android:fontFamily="sans-serif-condensed"
-                android:letterSpacing="0.08"
-                android:lineSpacingMultiplier="0.85"
-                android:layout_marginBottom="14dp"/>
+            <TextView android:text="PAD"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="54sp" android:textStyle="bold" android:textColor="#10b981"
+                android:fontFamily="sans-serif-condensed" android:letterSpacing="0.06"
+                android:lineSpacingMultiplier="0.9"
+                android:layout_marginBottom="18dp"/>
 
-            <!-- Tag -->
-            <LinearLayout android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
-                <View android:layout_width="20dp" android:layout_height="1dp"
-                    android:background="#10b981" android:layout_marginEnd="8dp"/>
-                <TextView
-                    android:text="VIRTUAL XBOX CONTROLLER"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="9sp"
-                    android:textColor="#2a6a4a"
-                    android:fontFamily="monospace"
-                    android:letterSpacing="0.18"/>
-                <View android:layout_width="20dp" android:layout_height="1dp"
-                    android:background="#10b981" android:layout_marginStart="8dp"/>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
+                <View android:layout_width="18dp" android:layout_height="1dp"
+                    android:background="#10b981" android:layout_marginEnd="6dp"/>
+                <TextView android:text="VIRTUAL XBOX CONTROLLER"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textSize="9sp" android:textColor="#1a5a3a"
+                    android:fontFamily="monospace" android:letterSpacing="0.16"/>
+                <View android:layout_width="18dp" android:layout_height="1dp"
+                    android:background="#10b981" android:layout_marginStart="6dp"/>
             </LinearLayout>
 
-            <TextView
-                android:text="15 PLAYERS  •  60FPS  •  LOW LATENCY"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="8sp"
-                android:textColor="#1a3a2a"
-                android:fontFamily="monospace"
-                android:letterSpacing="0.12"/>
-
+            <TextView android:text="15 PLAYERS  •  60FPS  •  LAN"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textSize="8sp" android:textColor="#0d2a1a"
+                android:fontFamily="monospace" android:letterSpacing="0.10"/>
         </LinearLayout>
 
-        <!-- CENTER divider -->
-        <LinearLayout android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginHorizontal="20dp">
-            <View android:layout_width="1dp" android:layout_height="100dp"
-                android:background="#0f2a1a"/>
-            <View android:layout_width="5dp" android:layout_height="5dp"
-                android:background="#10b981" android:layout_gravity="center"/>
-            <View android:layout_width="1dp" android:layout_height="100dp"
-                android:background="#0f2a1a"/>
+        <!-- DIVIDER -->
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+            android:orientation="vertical" android:gravity="center"
+            android:layout_marginHorizontal="16dp">
+            <View android:layout_width="1dp" android:layout_height="80dp" android:background="#0f2a1a"/>
+            <View android:layout_width="4dp" android:layout_height="4dp" android:background="#10b981" android:layout_gravity="center"/>
+            <View android:layout_width="1dp" android:layout_height="80dp" android:background="#0f2a1a"/>
         </LinearLayout>
 
-        <!-- RIGHT PANEL: Controls -->
+        <!-- RIGHT: Controls -->
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingEnd="32dp"
-            android:paddingStart="8dp">
+            android:paddingStart="4dp"
+            android:clipChildren="true">
 
             <!-- MAIN BUTTONS -->
-            <LinearLayout
-                android:id="@+id/mainButtons"
+            <LinearLayout android:id="@+id/mainButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:text="RELAY SERVER"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="8sp"
-                    android:textColor="#1a4a2a"
-                    android:fontFamily="monospace"
-                    android:letterSpacing="0.25"
+                <TextView android:text="RELAY SERVER"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textSize="8sp" android:textColor="#1a4a2a"
+                    android:fontFamily="monospace" android:letterSpacing="0.22"
                     android:layout_marginBottom="4dp"/>
 
-                <EditText
-                    android:id="@+id/serverInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:hint="192.168.1.x:8765"
-                    android:text="localhost:8765"
-                    android:textSize="12sp"
-                    android:textColor="#ffffff"
-                    android:background="@drawable/input_bg"
-                    android:padding="10dp"
-                    android:inputType="textUri"
-                    android:fontFamily="monospace"
-                    android:singleLine="true"
-                    android:layout_marginBottom="12dp"/>
+                <EditText android:id="@+id/serverInput"
+                    android:layout_width="match_parent" android:layout_height="42dp"
+                    android:hint="192.168.1.x:8765" android:text="localhost:8765"
+                    android:textSize="12sp" android:textColor="#ffffff"
+                    android:background="@drawable/input_bg" android:padding="10dp"
+                    android:inputType="textUri" android:fontFamily="monospace"
+                    android:singleLine="true" android:layout_marginBottom="10dp"/>
 
-                <RadioGroup
-                    android:id="@+id/ctrlTypeGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+                <RadioGroup android:id="@+id/ctrlTypeGroup"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="14dp">
                     <RadioButton android:id="@+id/radioSeries"
                         android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="SERIES X/S"
                         android:textColor="#00c8ff" android:buttonTint="#00c8ff"
-                        android:checked="true" android:textSize="9sp"
-                        android:fontFamily="monospace"/>
+                        android:checked="true" android:textSize="9sp" android:fontFamily="monospace"/>
                     <RadioButton android:id="@+id/radio360"
                         android:layout_width="0dp" android:layout_height="wrap_content"
                         android:layout_weight="1" android:text="XBOX 360"
@@ -167,164 +113,104 @@
                         android:textSize="9sp" android:fontFamily="monospace"/>
                 </RadioGroup>
 
-                <!-- HOST button with accent -->
-                <FrameLayout android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
-                    <View android:layout_width="match_parent" android:layout_height="48dp"
-                        android:background="#10b981" android:layout_marginTop="2dp"
-                        android:layout_marginStart="2dp"/>
-                    <Button android:id="@+id/btnHost"
-                        android:layout_width="match_parent" android:layout_height="48dp"
-                        android:text="HOST  —  PLAYER 1"
-                        android:textSize="11sp" android:textStyle="bold"
-                        android:textColor="#000000" android:backgroundTint="#0d2e1a"
-                        android:letterSpacing="0.08" android:fontFamily="monospace"/>
-                </FrameLayout>
+                <Button android:id="@+id/btnHost"
+                    android:layout_width="match_parent" android:layout_height="48dp"
+                    android:text="HOST  —  PLAYER 1"
+                    android:textSize="11sp" android:textStyle="bold"
+                    android:textColor="#000000" android:backgroundTint="#10b981"
+                    android:letterSpacing="0.06" android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
 
-                <!-- JOIN button -->
-                <FrameLayout android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <View android:layout_width="match_parent" android:layout_height="48dp"
-                        android:background="#003a5a" android:layout_marginTop="2dp"
-                        android:layout_marginStart="2dp"/>
-                    <Button android:id="@+id/btnJoin"
-                        android:layout_width="match_parent" android:layout_height="48dp"
-                        android:text="JOIN  WITH  CODE"
-                        android:textSize="11sp" android:textStyle="bold"
-                        android:textColor="#00c8ff" android:backgroundTint="#060f1a"
-                        android:letterSpacing="0.08" android:fontFamily="monospace"/>
-                </FrameLayout>
+                <Button android:id="@+id/btnJoin"
+                    android:layout_width="match_parent" android:layout_height="48dp"
+                    android:text="JOIN  WITH  CODE"
+                    android:textSize="11sp" android:textStyle="bold"
+                    android:textColor="#00c8ff" android:backgroundTint="#0a0f1a"
+                    android:letterSpacing="0.06" android:fontFamily="monospace"/>
             </LinearLayout>
 
-            <!-- HOST CODE DISPLAY -->
-            <LinearLayout
-                android:id="@+id/hostCodeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <!-- HOST CODE -->
+            <LinearLayout android:id="@+id/hostCodeLayout"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:orientation="vertical" android:gravity="center"
                 android:visibility="gone">
 
                 <TextView android:id="@+id/codeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="YOUR ROOM CODE"
-                    android:textSize="9sp"
-                    android:textColor="#2a4a3a"
-                    android:fontFamily="monospace"
-                    android:letterSpacing="0.25"
+                    android:textSize="9sp" android:textColor="#2a4a3a"
+                    android:fontFamily="monospace" android:letterSpacing="0.22"
                     android:layout_marginBottom="10dp"/>
 
-                <!-- Code box -->
-                <FrameLayout android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp">
-                    <View android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:background="#10b981" android:layout_marginTop="3dp"
-                        android:layout_marginStart="3dp"/>
-                    <TextView android:id="@+id/codeDisplay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="......"
-                        android:textSize="48sp"
-                        android:textStyle="bold"
-                        android:textColor="#10b981"
-                        android:fontFamily="monospace"
-                        android:letterSpacing="0.25"
-                        android:background="#060612"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"/>
-                </FrameLayout>
+                <TextView android:id="@+id/codeDisplay"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="......"
+                    android:textSize="50sp" android:textStyle="bold"
+                    android:textColor="#10b981" android:fontFamily="monospace"
+                    android:letterSpacing="0.22"
+                    android:background="#0a0a1a"
+                    android:paddingHorizontal="16dp" android:paddingVertical="6dp"
+                    android:layout_marginBottom="6dp"/>
 
-                <TextView
-                    android:text="Share with other players"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="9sp"
-                    android:textColor="#1a3a2a"
-                    android:fontFamily="monospace"
-                    android:layout_marginBottom="16dp"/>
+                <View android:layout_width="160dp" android:layout_height="1dp"
+                    android:background="#10b981" android:layout_marginBottom="10dp"/>
+
+                <TextView android:text="Share with other players"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textSize="9sp" android:textColor="#1a3a2a"
+                    android:fontFamily="monospace" android:layout_marginBottom="14dp"/>
 
                 <Button android:id="@+id/btnHostBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="← BACK"
-                    android:textSize="9sp"
-                    android:textColor="#2a4a3a"
-                    android:backgroundTint="#0d0d1a"
-                    android:fontFamily="monospace"/>
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="BACK"
+                    android:textSize="9sp" android:textColor="#2a4a3a"
+                    android:backgroundTint="#0d0d1a" android:fontFamily="monospace"/>
             </LinearLayout>
 
-            <!-- JOIN CODE INPUT -->
-            <LinearLayout
-                android:id="@+id/joinCodeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <!-- JOIN CODE -->
+            <LinearLayout android:id="@+id/joinCodeLayout"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:orientation="vertical" android:gravity="center"
                 android:visibility="gone">
 
-                <TextView
-                    android:text="ENTER ROOM CODE"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="9sp"
-                    android:textColor="#2a4a3a"
-                    android:fontFamily="monospace"
-                    android:letterSpacing="0.25"
+                <TextView android:text="ENTER ROOM CODE"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textSize="9sp" android:textColor="#2a4a3a"
+                    android:fontFamily="monospace" android:letterSpacing="0.22"
                     android:layout_marginBottom="10dp"/>
 
                 <EditText android:id="@+id/codeInput"
-                    android:layout_width="180dp"
-                    android:layout_height="56dp"
+                    android:layout_width="180dp" android:layout_height="56dp"
                     android:hint="000000"
-                    android:textSize="30sp"
-                    android:textColor="#10b981"
-                    android:textStyle="bold"
-                    android:background="@drawable/input_bg"
-                    android:padding="10dp"
-                    android:inputType="number"
-                    android:fontFamily="monospace"
-                    android:gravity="center"
-                    android:maxLength="6"
-                    android:layout_marginBottom="14dp"/>
+                    android:textSize="30sp" android:textColor="#10b981"
+                    android:textStyle="bold" android:background="@drawable/input_bg"
+                    android:padding="10dp" android:inputType="number"
+                    android:fontFamily="monospace" android:gravity="center"
+                    android:maxLength="6" android:layout_marginBottom="12dp"/>
 
                 <Button android:id="@+id/btnJoinConfirm"
-                    android:layout_width="180dp"
-                    android:layout_height="46dp"
+                    android:layout_width="180dp" android:layout_height="46dp"
                     android:text="CONNECT"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:backgroundTint="#10b981"
-                    android:fontFamily="monospace"
-                    android:layout_marginBottom="8dp"/>
+                    android:textSize="12sp" android:textStyle="bold"
+                    android:textColor="#000000" android:backgroundTint="#10b981"
+                    android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
 
                 <Button android:id="@+id/btnJoinBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="← BACK"
-                    android:textSize="9sp"
-                    android:textColor="#2a4a3a"
-                    android:backgroundTint="#0d0d1a"
-                    android:fontFamily="monospace"/>
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="BACK"
+                    android:textSize="9sp" android:textColor="#2a4a3a"
+                    android:backgroundTint="#0d0d1a" android:fontFamily="monospace"/>
             </LinearLayout>
 
         </FrameLayout>
     </LinearLayout>
 
-    <!-- Bottom version -->
     <TextView android:text="GRIMPAD  v1.0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:textSize="8sp"
-        android:textColor="#0d1a10"
-        android:fontFamily="monospace"
-        android:letterSpacing="0.2"
-        android:padding="10dp"/>
+        android:textSize="8sp" android:textColor="#0d1a10"
+        android:fontFamily="monospace" android:letterSpacing="0.2" android:padding="10dp"/>
 
 </FrameLayout>
