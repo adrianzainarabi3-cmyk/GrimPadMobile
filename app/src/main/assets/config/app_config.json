@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "build": "release",
+  "features": {
+    "haptics": true,
+    "animations": true,
+    "audio": true,
+    "particles": true
+  },
+  "controller": {
+    "deadzone": 0.08,
+    "fps": 60,
+    "max_players": 15,
+    "polling_rate": 1000
+  },
+  "ui": {
+    "theme": "dark",
+    "accent": "#10b981",
+    "bg": "#060612",
+    "animations": true
+  },
+  "network": {
+    "port": 8765,
+    "timeout": 10000,
+    "reconnect_delay": 3000
+  }
+}
